@@ -2,7 +2,8 @@
 
 A tool to generate a design definition of [goa](https://github.com/goadesign/goa) from a swagger definition.
 
-[![license](https://img.shields.io/github/license/tchssk/ago.svg?maxAge=2592000)]()
+[![license](https://img.shields.io/github/license/tchssk/ago.svg)]()
+
 
 ## Installation
 
