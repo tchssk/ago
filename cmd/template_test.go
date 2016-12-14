@@ -187,6 +187,14 @@ func TestDescriptionTmpl(t *testing.T) {
 			},
 			expected: `Description("Description of response")`,
 		},
+		"with multi lines in definition": {
+			definition: design.APIDefinition{
+				Description: `Description
+of
+API`,
+			},
+			expected: `Description("Description\nof\nAPI")`,
+		},
 		"without definition": {
 			definition: design.APIDefinition{},
 			expected:   ``,
