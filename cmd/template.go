@@ -22,47 +22,47 @@ import (
 `
 
 	// Components that have single value.
-	basePathT            = `{{if .BasePath}}BasePath("{{.BasePath}}"){{end}}`
-	canonicalActionNameT = `{{if .CanonicalActionName}}CanonicalActionName("{{.CanonicalActionName}}"){{end}}`
-	contentTypeT         = `{{if .ContentType}}ContentType("{{.ContentType}}"){{end}}`
+	basePathT            = `{{if .BasePath}}BasePath({{printf "%q" .BasePath}}){{end}}`
+	canonicalActionNameT = `{{if .CanonicalActionName}}CanonicalActionName({{printf "%q" .CanonicalActionName}}){{end}}`
+	contentTypeT         = `{{if .ContentType}}ContentType({{printf "%q" .ContentType}}){{end}}`
 	credentialsT         = `{{if .Credentials}}Credentials(){{end}}`
-	descriptionT         = `{{if .Description}}Description("{{.Description}}"){{end}}`
-	emailT               = `{{if .Email}}Email("{{.Email}}"){{end}}`
-	functionT            = `{{if .Function}}Function("{{.Function}}"){{end}}`
-	hostT                = `{{if .Host}}Host("{{.Host}}"){{end}}`
+	descriptionT         = `{{if .Description}}Description({{printf "%q" .Description}}){{end}}`
+	emailT               = `{{if .Email}}Email({{printf "%q" .Email}}){{end}}`
+	functionT            = `{{if .Function}}Function({{printf "%q" .Function}}){{end}}`
+	hostT                = `{{if .Host}}Host({{printf "%q" .Host}}){{end}}`
 	maxAgeT              = `{{if .MaxAge}}MaxAge({{.MaxAge}}){{end}}`
 	maxLengthT           = `{{if .MaxLength}}MaxLength({{.MaxLength}}){{end}}`
 	minLengthT           = `{{if .MinLength}}MinLength({{.MinLength}}){{end}}`
-	nameT                = `{{if .Name}}Name("{{.Name}}"){{end}}`
-	packageT             = `{{if .PackagePath}}Package("{{.PackagePath}}"){{end}}`
+	nameT                = `{{if .Name}}Name({{printf "%q" .Name}}){{end}}`
+	packageT             = `{{if .PackagePath}}Package({{printf "%q" .PackagePath}}){{end}}`
 	statusT              = `{{if .Status}}Status({{.Status}}){{end}}`
-	termsOfServiceT      = `{{if .TermsOfService}}TermsOfService("{{.TermsOfService}}"){{end}}`
-	titleT               = `{{if .Title}}Title("{{.Title}}"){{end}}`
-	typeNameT            = `{{if .TypeName}}TypeName("{{.TypeName}}"){{end}}`
-	urlT                 = `{{if .URL}}URL("{{.URL}}"){{end}}`
-	versionT             = `{{if .Version}}Version("{{.Version}}"){{end}}`
+	termsOfServiceT      = `{{if .TermsOfService}}TermsOfService({{printf "%q" .TermsOfService}}){{end}}`
+	titleT               = `{{if .Title}}Title({{printf "%q" .Title}}){{end}}`
+	typeNameT            = `{{if .TypeName}}TypeName({{printf "%q" .TypeName}}){{end}}`
+	urlT                 = `{{if .URL}}URL({{printf "%q" .URL}}){{end}}`
+	versionT             = `{{if .Version}}Version({{printf "%q" .Version}}){{end}}`
 
 	// Components that have multiple values.
-	exposeT = `{{if .Exposed}}Expose({{if (eq (len .Exposed) 1)}}{{range .Exposed}}"{{.}}"{{end}}){{else}}
-{{range .Exposed}}"{{.}}",
+	exposeT = `{{if .Exposed}}Expose({{if (eq (len .Exposed) 1)}}{{range .Exposed}}{{printf "%q" .}}{{end}}){{else}}
+{{range .Exposed}}{{printf "%q" .}},
 {{end}}){{end}}{{end}}`
-	methodsT = `{{if .Methods}}Methods({{if (eq (len .Methods) 1)}}{{range .Methods}}"{{.}}"{{end}}){{else}}
-{{range .Methods}}"{{.}}",
+	methodsT = `{{if .Methods}}Methods({{if (eq (len .Methods) 1)}}{{range .Methods}}{{printf "%q" .}}{{end}}){{else}}
+{{range .Methods}}{{printf "%q" .}},
 {{end}}){{end}}{{end}}`
-	schemeT = `{{if .Schemes}}Scheme({{if (eq (len .Schemes) 1)}}{{range .Schemes}}"{{.}}"{{end}}){{else}}
-{{range .Schemes}}"{{.}}",
+	schemeT = `{{if .Schemes}}Scheme({{if (eq (len .Schemes) 1)}}{{range .Schemes}}{{printf "%q" .}}{{end}}){{else}}
+{{range .Schemes}}{{printf "%q" .}},
 {{end}}){{end}}{{end}}`
 
 	// Containers.
 	actionT = `{{if .Actions}}{{$actions := .Actions}}{{$keys := keys .Actions}}{{range $keys}}{{if (not (eq (index $keys 0) .))}}
-{{end}}{{with index $actions .}}Action("{{.Name}}", func() {
+{{end}}{{with index $actions .}}Action({{printf "%q" .Name}}, func() {
 {{if .Description}}{{template "description" .}}
 {{end}}{{if .Docs}}{{template "docs" .}}
 {{end}}{{if .Schemes}}{{template "scheme" .}}
 {{end}}{{if .Routes}}{{template "routing" .}}
 {{end}}{{if .Payload}}{{template "payload" .}}
 {{end}}}){{end}}{{end}}{{end}}`
-	apiT = `{{if .}}var _ = API("{{if .Name}}{{.Name}}{{end}}", func() {
+	apiT = `{{if .}}var _ = API({{if .Name}}{{printf "%q" .Name}}{{else}}""{{end}}, func() {
 {{if .Title}}{{template "title" .}}
 {{end}}{{if .Description}}{{template "description" .}}
 {{end}}{{if .Version}}{{template "version" .}}
@@ -77,54 +77,54 @@ import (
 {{end}}{{if .Consumes}}{{template "consumes" .}}
 {{end}}{{if .Produces}}{{template "produces" .}}
 {{end}}}){{end}}`
-	connectT  = `{{if and .Verb .Path}}{{if (eq .Verb "CONNECT")}}CONNECT("{{.Path}}"){{end}}{{end}}`
+	connectT  = `{{if and .Verb .Path}}{{if (eq .Verb "CONNECT")}}CONNECT({{printf "%q" .Path}}){{end}}{{end}}`
 	consumesT = `{{if .Consumes}}{{range $index, $element := .Consumes}}{{with $element}}{{if (not (eq $index 0))}}
 {{end}}Consumes({{if (or (gt (len .MIMETypes) 1) .Function .PackagePath)}}
-{{range .MIMETypes}}"{{.}}",
+{{range .MIMETypes}}{{printf "%q" .}},
 {{end}}{{if (or .Function .PackagePath)}}func() {
 {{if .Function}}{{template "function" .}}
 {{end}}{{if .PackagePath}}{{template "package" .}}
 {{end}}},
-{{end}}{{else}}{{range .MIMETypes}}"{{.}}"{{end}}{{end}}){{end}}{{end}}{{end}}`
+{{end}}{{else}}{{range .MIMETypes}}{{printf "%q" .}}{{end}}{{end}}){{end}}{{end}}{{end}}`
 	contactT = `{{if .Contact}}{{with .Contact}}Contact(func() {
 {{if .Name}}{{template "name" .}}
 {{end}}{{if .Email}}{{template "email" .}}
 {{end}}{{if .URL}}{{template "url" .}}
 {{end}}}){{end}}{{end}}`
-	deleteT = `{{if and .Verb .Path}}{{if (eq .Verb "DELETE")}}DELETE("{{.Path}}"){{end}}{{end}}`
+	deleteT = `{{if and .Verb .Path}}{{if (eq .Verb "DELETE")}}DELETE({{printf "%q" .Path}}){{end}}{{end}}`
 	docsT   = `{{if .Docs}}{{with .Docs}}Docs(func() {
 {{if .Description}}{{template "description" .}}
 {{end}}{{if .URL}}{{template "url" .}}
 {{end}}}){{end}}{{end}}`
-	getT     = `{{if and .Verb .Path}}{{if (eq .Verb "GET")}}GET("{{.Path}}"){{end}}{{end}}`
-	headT    = `{{if and .Verb .Path}}{{if (eq .Verb "HEAD")}}HEAD("{{.Path}}"){{end}}{{end}}`
+	getT     = `{{if and .Verb .Path}}{{if (eq .Verb "GET")}}GET({{printf "%q" .Path}}){{end}}{{end}}`
+	headT    = `{{if and .Verb .Path}}{{if (eq .Verb "HEAD")}}HEAD({{printf "%q" .Path}}){{end}}{{end}}`
 	licenseT = `{{if .License}}{{with .License}}License(func() {
 {{if .Name}}{{template "name" .}}
 {{end}}{{if .URL}}{{template "url" .}}
 {{end}}}){{end}}{{end}}`
-	optionsT = `{{if and .Verb .Path}}{{if (eq .Verb "OPTIONS")}}OPTIONS("{{.Path}}"){{end}}{{end}}`
+	optionsT = `{{if and .Verb .Path}}{{if (eq .Verb "OPTIONS")}}OPTIONS({{printf "%q" .Path}}){{end}}{{end}}`
 	originT  = `{{if .Origins}}{{$origins := .Origins}}{{$keys := keys .Origins}}{{range $keys}}{{if (not (eq (index $keys 0) .))}}
-{{end}}{{with index $origins .}}Origin("{{.Origin}}", func() {
+{{end}}{{with index $origins .}}Origin({{printf "%q" .Origin}}, func() {
 {{if .Headers}}Headers(
-{{range .Headers}}"{{.}}",
+{{range .Headers}}{{printf "%q" .}},
 {{end}})
 {{end}}{{if .Methods}}{{template "methods" .}}
 {{end}}{{if .Exposed}}{{template "expose" .}}
 {{end}}{{if .MaxAge}}{{template "maxAge" .}}
 {{end}}{{if .Credentials}}{{template "credentials" .}}
 {{end}}}){{end}}{{end}}{{end}}`
-	patchT    = `{{if and .Verb .Path}}{{if (eq .Verb "PATCH")}}PATCH("{{.Path}}"){{end}}{{end}}`
+	patchT    = `{{if and .Verb .Path}}{{if (eq .Verb "PATCH")}}PATCH({{printf "%q" .Path}}){{end}}{{end}}`
 	payloadT  = `{{if .Payload}}{{with .Payload}}Payload({{.TypeName}}){{end}}{{end}}`
-	postT     = `{{if and .Verb .Path}}{{if (eq .Verb "POST")}}POST("{{.Path}}"){{end}}{{end}}`
-	putT      = `{{if and .Verb .Path}}{{if (eq .Verb "PUT")}}PUT("{{.Path}}"){{end}}{{end}}`
+	postT     = `{{if and .Verb .Path}}{{if (eq .Verb "POST")}}POST({{printf "%q" .Path}}){{end}}{{end}}`
+	putT      = `{{if and .Verb .Path}}{{if (eq .Verb "PUT")}}PUT({{printf "%q" .Path}}){{end}}{{end}}`
 	producesT = `{{if .Produces}}{{range $index, $element := .Produces}}{{with $element}}{{if (not (eq $index 0))}}
 {{end}}Produces({{if (or (gt (len .MIMETypes) 1) .Function .PackagePath)}}
-{{range .MIMETypes}}"{{.}}",
+{{range .MIMETypes}}{{printf "%q" .}},
 {{end}}{{if (or .Function .PackagePath)}}func() {
 {{if .Function}}{{template "function" .}}
 {{end}}{{if .PackagePath}}{{template "package" .}}
 {{end}}},
-{{end}}{{else}}{{range .MIMETypes}}"{{.}}"{{end}}{{end}}){{end}}{{end}}{{end}}`
+{{end}}{{else}}{{range .MIMETypes}}{{printf "%q" .}}{{end}}{{end}}){{end}}{{end}}{{end}}`
 	responseT = `{{if .Responses}}{{$responses := .Responses}}{{$keys := keys .Responses}}{{range $keys}}{{if (not (eq (index $keys 0) .))}}
 {{end}}{{with index $responses .}}Response({{.Name}}){{end}}{{end}}{{end}}`
 	routingT = `{{if .Routes}}Routing({{if (eq (len .Routes) 1)}}{{range .Routes}}{{template "connect" .}}{{template "delete" .}}{{template "get" .}}{{template "head" .}}{{template "options" .}}{{template "patch" .}}{{template "post" .}}{{template "put" .}}{{template "trace" .}}{{end}}){{else}}
@@ -138,9 +138,9 @@ import (
 {{end}}{{if (eq .Verb "PUT")}}{{template "put" .}},
 {{end}}{{if (eq .Verb "TRACE")}}{{template "trace" .}},
 {{end}}{{end}}){{end}}{{end}}`
-	traceT = `{{if and .Verb .Path}}{{if (eq .Verb "TRACE")}}TRACE("{{.Path}}"){{end}}{{end}}`
+	traceT = `{{if and .Verb .Path}}{{if (eq .Verb "TRACE")}}TRACE({{printf "%q" .Path}}){{end}}{{end}}`
 	typeT  = `{{if .Types}}{{$types := .Types}}{{$keys := keys .Types}}{{range $keys}}{{if (not (eq (index $keys 0) .))}}
-{{end}}{{with index $types .}}var {{.TypeName}} = Type("{{.TypeName}}", func() {
+{{end}}{{with index $types .}}var {{.TypeName}} = Type({{printf "%q" .TypeName}}, func() {
 }){{end}}{{end}}{{end}}`
 )
 
