@@ -1,8 +1,8 @@
 package cmd
 
 import (
-	"html/template"
 	"sort"
+	"text/template"
 
 	"github.com/goadesign/goa/design"
 )
