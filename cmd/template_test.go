@@ -726,8 +726,24 @@ func TestSchemeTmpl(t *testing.T) {
 		definition interface{}
 		expected   string
 	}{
-		"with single definition": {
+		"with api definition": {
 			definition: design.APIDefinition{
+				Schemes: []string{
+					"http",
+				},
+			},
+			expected: `Scheme("http")`,
+		},
+		"with resource definition": {
+			definition: design.ResourceDefinition{
+				Schemes: []string{
+					"http",
+				},
+			},
+			expected: `Scheme("http")`,
+		},
+		"with action definition": {
+			definition: design.ActionDefinition{
 				Schemes: []string{
 					"http",
 				},
