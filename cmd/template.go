@@ -22,36 +22,36 @@ import (
 `
 
 	// Components that have single value.
-	basePathT            = `{{if .BasePath}}BasePath({{printf "%q" .BasePath}}){{end}}`
-	canonicalActionNameT = `{{if .CanonicalActionName}}CanonicalActionName({{printf "%q" .CanonicalActionName}}){{end}}`
-	contentTypeT         = `{{if .ContentType}}ContentType({{printf "%q" .ContentType}}){{end}}`
-	credentialsT         = `{{if .Credentials}}Credentials(){{end}}`
-	descriptionT         = `{{if .Description}}Description({{printf "%q" .Description}}){{end}}`
-	emailT               = `{{if .Email}}Email({{printf "%q" .Email}}){{end}}`
-	functionT            = `{{if .Function}}Function({{printf "%q" .Function}}){{end}}`
-	hostT                = `{{if .Host}}Host({{printf "%q" .Host}}){{end}}`
-	maxAgeT              = `{{if .MaxAge}}MaxAge({{.MaxAge}}){{end}}`
-	maxLengthT           = `{{if .MaxLength}}MaxLength({{.MaxLength}}){{end}}`
-	minLengthT           = `{{if .MinLength}}MinLength({{.MinLength}}){{end}}`
-	nameT                = `{{if .Name}}Name({{printf "%q" .Name}}){{end}}`
-	packageT             = `{{if .PackagePath}}Package({{printf "%q" .PackagePath}}){{end}}`
-	statusT              = `{{if .Status}}Status({{.Status}}){{end}}`
-	termsOfServiceT      = `{{if .TermsOfService}}TermsOfService({{printf "%q" .TermsOfService}}){{end}}`
-	titleT               = `{{if .Title}}Title({{printf "%q" .Title}}){{end}}`
-	typeNameT            = `{{if .TypeName}}TypeName({{printf "%q" .TypeName}}){{end}}`
-	urlT                 = `{{if .URL}}URL({{printf "%q" .URL}}){{end}}`
-	versionT             = `{{if .Version}}Version({{printf "%q" .Version}}){{end}}`
+	basePathT            = `{{if .BasePath}}BasePath({{printf "%q" .BasePath}}){{end}}`                                  // This template expects APIDefinition or ResourceDefinition.
+	canonicalActionNameT = `{{if .CanonicalActionName}}CanonicalActionName({{printf "%q" .CanonicalActionName}}){{end}}` // This template expects ResourceDefinition.
+	contentTypeT         = `{{if .ContentType}}ContentType({{printf "%q" .ContentType}}){{end}}`                         // This template expects MediaTypeDefinition.
+	credentialsT         = `{{if .Credentials}}Credentials(){{end}}`                                                     // This template expects CORSDefinition.
+	descriptionT         = `{{if .Description}}Description({{printf "%q" .Description}}){{end}}`                         // This template expects APIDefinition or DocsDefinition or ResourceDefinition or ResponseDefinition.
+	emailT               = `{{if .Email}}Email({{printf "%q" .Email}}){{end}}`                                           // This template expects ContactDefinition.
+	functionT            = `{{if .Function}}Function({{printf "%q" .Function}}){{end}}`                                  // This template expects EncodingDefinition.
+	hostT                = `{{if .Host}}Host({{printf "%q" .Host}}){{end}}`                                              // This template expects APIDefinition.
+	maxAgeT              = `{{if .MaxAge}}MaxAge({{.MaxAge}}){{end}}`                                                    // This template expects CORSDefinition.
+	maxLengthT           = `{{if .MaxLength}}MaxLength({{.MaxLength}}){{end}}`                                           // This template expects ValidationDefinition.
+	minLengthT           = `{{if .MinLength}}MinLength({{.MinLength}}){{end}}`                                           // This template expects ValidationDefinition.
+	nameT                = `{{if .Name}}Name({{printf "%q" .Name}}){{end}}`                                              // This template expects APIDefinition or ContactDefinition or LicenseDefinition.
+	packageT             = `{{if .PackagePath}}Package({{printf "%q" .PackagePath}}){{end}}`                             // This template expects EncodingDefinition.
+	statusT              = `{{if .Status}}Status({{.Status}}){{end}}`                                                    // This template expects ResponseDefinition.
+	termsOfServiceT      = `{{if .TermsOfService}}TermsOfService({{printf "%q" .TermsOfService}}){{end}}`                // This template expects APIDefinition.
+	titleT               = `{{if .Title}}Title({{printf "%q" .Title}}){{end}}`                                           // This template expects APIDefinition.
+	typeNameT            = `{{if .TypeName}}TypeName({{printf "%q" .TypeName}}){{end}}`                                  // This template expects MediaTypeDefinition or UserTypeDefinition.
+	urlT                 = `{{if .URL}}URL({{printf "%q" .URL}}){{end}}`                                                 // This template expects ContactDefinition or LicenseDefinition or DocsDefinition.
+	versionT             = `{{if .Version}}Version({{printf "%q" .Version}}){{end}}`                                     // This template expects APIDefinition.
 
 	// Components that have multiple values.
 	exposeT = `{{if .Exposed}}Expose({{if (eq (len .Exposed) 1)}}{{range .Exposed}}{{printf "%q" .}}{{end}}){{else}}
 {{range .Exposed}}{{printf "%q" .}},
-{{end}}){{end}}{{end}}`
+{{end}}){{end}}{{end}}` // This template expects CORSDefinition.
 	methodsT = `{{if .Methods}}Methods({{if (eq (len .Methods) 1)}}{{range .Methods}}{{printf "%q" .}}{{end}}){{else}}
 {{range .Methods}}{{printf "%q" .}},
-{{end}}){{end}}{{end}}`
+{{end}}){{end}}{{end}}` // This template expects CORSDefinition.
 	schemeT = `{{if .Schemes}}Scheme({{if (eq (len .Schemes) 1)}}{{range .Schemes}}{{printf "%q" .}}{{end}}){{else}}
 {{range .Schemes}}{{printf "%q" .}},
-{{end}}){{end}}{{end}}`
+{{end}}){{end}}{{end}}` // This template expects APIDefinition or ResourceDefinition or ActionDefinition.
 
 	// Containers.
 	actionT = `{{if .Actions}}{{$actions := .Actions}}{{$keys := keys .Actions}}{{range $keys}}{{if (not (eq (index $keys 0) .))}}
