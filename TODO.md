@@ -10,9 +10,9 @@
 - [x] Schemes
 - [x] BasePath
 - [ ] Params
-- [ ] Consumes
-- [ ] Produces
-- [ ] Origins
+- [x] Consumes
+- [x] Produces
+- [x] Origins
 - [x] TermsOfService
 - [x] Contact
 - [x] License
